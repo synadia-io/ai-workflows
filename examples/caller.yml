@@ -1,7 +1,7 @@
 # Example: thin caller workflow for a project repo
 #
 # Copy this file into your project's .github/workflows/ directory and customize:
-#   1. Replace "your-org/ai-workflows" with your org/repo path
+#   1. Replace "synadia-io/ai-workflows" with your org/repo path
 #   2. Set review_focus to describe your project's specific review areas
 #   3. Set checkout_mode to "base" for safer fork reviews (no fork code on runner)
 #   4. Add your Claude Code OAuth token as ANTHROPIC_API_KEY in the repo's secrets
@@ -24,7 +24,7 @@ on:
 
 jobs:
   claude:
-    uses: your-org/ai-workflows/.github/workflows/claude.yml@v1
+    uses: synadia-io/ai-workflows/.github/workflows/claude.yml@v1
     with:
       review_focus: |
         Additionally focus on:

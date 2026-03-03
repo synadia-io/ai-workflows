@@ -34,7 +34,7 @@ on:
 
 jobs:
   claude:
-    uses: your-org/ai-workflows/.github/workflows/claude.yml@v1
+    uses: synadia-io/ai-workflows/.github/workflows/claude.yml@v1
     with:
       review_focus: |
         Additionally focus on:
