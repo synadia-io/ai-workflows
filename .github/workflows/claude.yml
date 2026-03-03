@@ -72,8 +72,6 @@ jobs:
           claude_code_oauth_token: ${{ secrets.anthropic_api_key }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           trigger_phrase: ${{ inputs.trigger_phrase }}
-          claude_args: >-
-            --max-turns ${{ inputs.max_turns }}
 
   claude-auto-review:
     if: github.event_name == 'pull_request_target'
@@ -101,7 +99,6 @@ jobs:
             Focus on:
             - Correctness and potential bugs
             - Security issues and potential vulnerabilities
-            - API design and consistency
             - Performance implications
 
             Be concise. Only flag real issues, not style nits.
