@@ -43,7 +43,7 @@ jobs:
       claude_oauth_token: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
-See [`examples/caller.yml`](examples/caller.yml) for a complete reference.
+See [`examples/caller.yml`](examples/caller.yml) for a template, or [orbit.rs](https://github.com/synadia-io/orbit.rs/blob/main/.github/workflows/claude.yml) for a live example.
 
 ## Inputs
 
