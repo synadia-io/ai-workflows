@@ -12,7 +12,7 @@ Callers define triggers (`on:`) and pass project-specific inputs. Event routing 
 
 ## Quick Start
 
-1. Add your Claude Code OAuth token as `ANTHROPIC_API_KEY` in your repo's secrets.
+1. Add your Claude Code OAuth token as `CLAUDE_OAUTH_TOKEN` in your repo's secrets.
 2. Create `.github/workflows/claude.yml` in your project:
 
 ```yaml
@@ -40,7 +40,7 @@ jobs:
         Additionally focus on:
         - Your project-specific concerns here
     secrets:
-      claude_oauth_token: ${{ secrets.ANTHROPIC_API_KEY }}
+      claude_oauth_token: ${{ secrets.CLAUDE_OAUTH_TOKEN }}
 ```
 
 See [`examples/caller.yml`](examples/caller.yml) for a template, or [orbit.rs](https://github.com/synadia-io/orbit.rs/blob/main/.github/workflows/claude.yml) for a live example.

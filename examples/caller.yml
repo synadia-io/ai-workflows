@@ -4,7 +4,7 @@
 #   1. Replace "synadia-io/ai-workflows" with your org/repo path
 #   2. Set review_focus to describe your project's specific review areas
 #   3. Set checkout_mode to "base" for safer fork reviews (no fork code on runner)
-#   4. Add your Claude Code OAuth token as ANTHROPIC_API_KEY in the repo's secrets
+#   4. Add your Claude Code OAuth token as CLAUDE_OAUTH_TOKEN in the repo's secrets
 
 name: Claude Code
 
@@ -31,4 +31,4 @@ jobs:
         - Your project-specific review area 1
         - Your project-specific review area 2
     secrets:
-      claude_oauth_token: ${{ secrets.ANTHROPIC_API_KEY }}
+      claude_oauth_token: ${{ secrets.CLAUDE_OAUTH_TOKEN }}
