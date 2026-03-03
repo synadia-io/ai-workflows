@@ -12,7 +12,7 @@ Callers define triggers (`on:`) and pass project-specific inputs. Event routing 
 
 ## Quick Start
 
-1. Add `ANTHROPIC_API_KEY` to your repo's secrets.
+1. Add your Claude Code OAuth token as `ANTHROPIC_API_KEY` in your repo's secrets.
 2. Create `.github/workflows/claude.yml` in your project:
 
 ```yaml
@@ -40,7 +40,7 @@ jobs:
         Additionally focus on:
         - Your project-specific concerns here
     secrets:
-      anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+      claude_oauth_token: ${{ secrets.ANTHROPIC_API_KEY }}
 ```
 
 See [`examples/caller.yml`](examples/caller.yml) for a complete reference.
@@ -58,7 +58,7 @@ See [`examples/caller.yml`](examples/caller.yml) for a complete reference.
 | `allowed_non_write_users` | string | `*` | Non-write users allowed to trigger auto-review |
 | `track_progress` | boolean | `true` | Show progress updates on the PR |
 
-Required secret: `anthropic_api_key`
+Required secret: `claude_oauth_token` (Claude Code OAuth token)
 
 ## Checkout Modes
 

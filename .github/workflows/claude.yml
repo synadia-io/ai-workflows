@@ -47,7 +47,7 @@ on:
         type: boolean
         default: true
     secrets:
-      anthropic_api_key:
+      claude_oauth_token:
         required: true
 
 permissions:
@@ -69,7 +69,7 @@ jobs:
 
       - uses: anthropics/claude-code-action@v1
         with:
-          claude_code_oauth_token: ${{ secrets.anthropic_api_key }}
+          claude_code_oauth_token: ${{ secrets.claude_oauth_token }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           trigger_phrase: ${{ inputs.trigger_phrase }}
 
@@ -84,7 +84,7 @@ jobs:
 
       - uses: anthropics/claude-code-action@v1
         with:
-          claude_code_oauth_token: ${{ secrets.anthropic_api_key }}
+          claude_code_oauth_token: ${{ secrets.claude_oauth_token }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           allowed_non_write_users: ${{ inputs.allowed_non_write_users }}
           track_progress: ${{ inputs.track_progress }}
