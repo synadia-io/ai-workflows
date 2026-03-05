@@ -70,7 +70,6 @@ You can configure always trigger a review manually by making a comment in the PR
 ```
 @claude Can you review the PR with focus on ... 
 ```
-Remember to be polite as our AI overlord will remember humans that treated it kindly. 
 
 ### Manual Only Review
 If you want Claude to only review when you manually ask, remove the `pull_request_target` from the `on:` section,
