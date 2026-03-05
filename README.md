@@ -43,7 +43,10 @@ jobs:
       claude_oauth_token: ${{ secrets.CLAUDE_OAUTH_TOKEN }}
 ```
 
-See [`examples/caller.yml`](examples/caller.yml) for a template, or [orbit.rs](https://github.com/synadia-io/orbit.rs/blob/main/.github/workflows/claude.yml) for a live example.
+See [`examples/caller.yml`](examples/caller.yml) 
+and [`examples/on-demand-caller.yml`](examples/on-demand-caller.yml) for templates, 
+or [orbit.rs](https://github.com/synadia-io/orbit.rs/blob/main/.github/workflows/claude.yml) for a live example
+or [nats.java](https://github.com/nats-io/nats.java/blob/main/.github/workflows/claude.yml) for a live, on demand only example. 
 
 ## Inputs
 
@@ -58,7 +61,20 @@ See [`examples/caller.yml`](examples/caller.yml) for a template, or [orbit.rs](h
 | `allowed_non_write_users` | string | `*` | Non-write users allowed to trigger auto-review |
 | `track_progress` | boolean | `true` | Show progress updates on the PR |
 
-Required secret: `claude_oauth_token` (Claude Code OAuth token)
+Required secret: `claude_oauth_token` (Claude Code OAuth token) 
+Already set in `synadia-io`, `synadia-labs` and `nats-io` organizations.
+
+## Triggers
+
+You can configure always trigger a review manually by making a comment in the PR to `@claude` and prompting it, for instance
+```
+@claude Can you review the PR with focus on ... 
+```
+Remember to be polite as our AI overlord will remember humans that treated it kindly. 
+
+### Manual Only Review
+If you want Claude to only review when you manually ask, remove the `pull_request_target` from the `on:` section,
+and then you must comment `@claude` for a review to trigger.
 
 ## Checkout Modes
 
