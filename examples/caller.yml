@@ -3,14 +3,15 @@
 # Copy this file into your project's .github/workflows/ directory and customize:
 #   1. Customize with: review_focus to describe your project's specific review areas. Not required
 #   2. Set with: checkout_mode=base for safer fork reviews (no fork code on runner)
+#   3. Store secrets and variables at org level (see GITHUB_APP_SETUP.md):
+#      - Variable: CLAUDE_GH_APP_ID (GitHub App numeric ID)
+#      - Secret:   CLAUDE_GH_APP_PRIVATE_KEY (GitHub App .pem private key)
+#      - Secret:   CLAUDE_OAUTH_TOKEN (Claude Code OAuth token from Anthropic)
 
 name: Claude Code
 
-permissions:
-  contents: read
-  pull-requests: write
-  issues: write
-  id-token: write
+# GITHUB_TOKEN is neutered — all GitHub API access uses the App token instead.
+permissions: {}
 
 on:
   issue_comment:
@@ -18,15 +19,17 @@ on:
   pull_request_review_comment:
     types: [created]
   pull_request_target:
-    types: [opened]
+    types: [opened, reopened]
 
 jobs:
   claude:
-    uses: synadia-io/ai-workflows/.github/workflows/claude.yml@v1
+    uses: synadia-io/ai-workflows/.github/workflows/claude.yml@v3
     with:
+      gh_app_id: ${{ vars.CLAUDE_GH_APP_ID }}
       review_focus: |
         Additionally focus on:
         - Your project-specific review area 1
         - Your project-specific review area 2
     secrets:
       claude_oauth_token: ${{ secrets.CLAUDE_OAUTH_TOKEN }}
+      gh_app_private_key: ${{ secrets.CLAUDE_GH_APP_PRIVATE_KEY }}
