@@ -1,13 +1,8 @@
 # Example: thin caller workflow for a project repo
 #
 # Copy this file into your project's .github/workflows/ directory and customize:
-#   1. Replace "synadia-io/ai-workflows" with your org/repo path
-#   2. Set review_focus to describe your project's specific review areas
-#   3. Set checkout_mode to "base" for safer fork reviews (no fork code on runner)
-#   4. Store secrets and variables at org level (see GITHUB_APP_SETUP.md):
-#      - Variable: CLAUDE_GH_APP_ID (GitHub App numeric ID)
-#      - Secret:   CLAUDE_GH_APP_PRIVATE_KEY (GitHub App .pem private key)
-#      - Secret:   CLAUDE_OAUTH_TOKEN (Claude Code OAuth token from Anthropic)
+#   1. Customize with: review_focus to describe your project's specific review areas. Not required
+#   2. Set with: checkout_mode=base for safer fork reviews (no fork code on runner)
 
 name: Claude Code
 
