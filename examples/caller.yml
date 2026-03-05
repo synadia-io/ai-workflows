@@ -3,10 +3,6 @@
 # Copy this file into your project's .github/workflows/ directory and customize:
 #   1. Customize with: review_focus to describe your project's specific review areas. Not required
 #   2. Set with: checkout_mode=base for safer fork reviews (no fork code on runner)
-#   3. Store secrets and variables at org level (see GITHUB_APP_SETUP.md):
-#      - Variable: CLAUDE_GH_APP_ID (GitHub App numeric ID)
-#      - Secret:   CLAUDE_GH_APP_PRIVATE_KEY (GitHub App .pem private key)
-#      - Secret:   CLAUDE_OAUTH_TOKEN (Claude Code OAuth token from Anthropic)
 
 name: Claude Code
 
