@@ -35,6 +35,7 @@ jobs:
     uses: synadia-io/ai-workflows/.github/workflows/claude.yml@v2
     with:
       gh_app_id: ${{ vars.CLAUDE_GH_APP_ID }}
+      checkout_mode: base
       review_focus: |
         Additionally focus on:
         - Your project-specific concerns here

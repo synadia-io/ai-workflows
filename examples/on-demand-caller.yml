@@ -5,11 +5,8 @@
 
 name: Claude Code
 
-permissions:
-  contents: read
-  pull-requests: write
-  issues: write
-  id-token: write
+# GITHUB_TOKEN is neutered — all GitHub API access uses the App token instead.
+permissions: {}
 
 on:
   issue_comment:
