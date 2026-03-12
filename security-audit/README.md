@@ -1,5 +1,7 @@
 # `/security-audit` — Claude Code Security Audit Command
 
+**For single use, you can simply paste the `security-audit` contents as claude prompt**
+
 A comprehensive, automated security audit slash command for [Claude Code](https://claude.com/claude-code). Runs a 5-phase penetration-test-grade audit on any codebase and produces a detailed `SECURITY_AUDIT_REPORT.md`.
 
 ## What it does
