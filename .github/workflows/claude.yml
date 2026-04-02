@@ -11,8 +11,8 @@
 #
 # Security: uses a GitHub App token instead of GITHUB_TOKEN. The App should have
 # only Contents:read, Pull requests:read+write, Issues:read+write. GITHUB_TOKEN
-# is limited to contents:read (required by claude-code-action for restoring
-# trusted config files from the base branch).
+# is limited to contents:read and actions:read (required by claude-code-action
+# for restoring trusted config files from the base branch).
 #
 # See GITHUB_APP_SETUP.md for setup instructions.
 
@@ -75,12 +75,13 @@ on:
       gh_app_private_key:
         required: true
 
-# GITHUB_TOKEN needs only contents:read — required by claude-code-action to
-# fetch trusted config files (.claude/, .mcp.json) from the base branch when
-# checking out PR head (security feature added in v1.0.75). All other GitHub
-# API access uses the App token.
+# GITHUB_TOKEN needs contents:read and actions:read — required by
+# claude-code-action to fetch trusted config files (.claude/, .mcp.json) from
+# the base branch when checking out PR head (security feature added in v1.0.75).
+# All other GitHub API access uses the App token.
 permissions:
   contents: read
+  actions: read
 
 jobs:
   claude-interactive:
@@ -91,6 +92,7 @@ jobs:
     runs-on: ${{ inputs.runner }}
     permissions:
       contents: read
+      actions: read
     steps:
       - name: Generate GitHub App token
         uses: actions/create-github-app-token@v1
@@ -121,6 +123,7 @@ jobs:
     runs-on: ${{ inputs.runner }}
     permissions:
       contents: read
+      actions: read
     steps:
       - name: Generate GitHub App token
         uses: actions/create-github-app-token@v1
