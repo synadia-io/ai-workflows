@@ -50,7 +50,6 @@ jobs:
 See [`examples/caller.yml`](examples/caller.yml)
 and [`examples/on-demand-caller.yml`](examples/on-demand-caller.yml) for templates,
 or [orbit.rs](https://github.com/synadia-io/orbit.rs/blob/main/.github/workflows/claude.yml) for a live example
-
 or [nats.java](https://github.com/nats-io/nats.java/blob/main/.github/workflows/claude.yml) for a live, example that allows to manually opt out by putting `[skip claude]` in the PR main comment when opening, is coded like so:
 
 ```yaml
