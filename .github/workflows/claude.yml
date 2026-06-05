@@ -58,9 +58,9 @@ on:
         type: string
         default: "Read,Glob,Grep,Task,WebFetch,WebSearch,Bash(gh:*),Bash(git:*),mcp__github_inline_comment__create_inline_comment"
       review_allowed_non_write_users:
-        description: "Non-write users allowed to trigger auto-review (* = anyone)"
+        description: "Non-write users allowed to trigger auto-review (empty = write access required, * = anyone)"
         type: string
-        default: "*"
+        default: ""
       interactive_allowed_non_write_users:
         description: "Non-write users allowed to use @claude interactive (empty = maintainers only)"
         type: string
@@ -100,12 +100,22 @@ jobs:
         with:
           app-id: ${{ inputs.gh_app_id }}
           private-key: ${{ secrets.gh_app_private_key }}
+          # Cap the App token to the minimum this workflow uses. The token is the
+          # App's install perms intersected with these — it can only narrow.
+          # @claude is read-only on code (no Edit/Write, git push disallowed) but
+          # posts comments on both issues and PRs.
+          permission-contents: read
+          permission-pull-requests: write
+          permission-issues: write
 
       - uses: actions/checkout@v4
         with:
           token: ${{ steps.app-token.outputs.token }}
 
-      - uses: anthropics/claude-code-action@v1
+      # Pinned to an immutable commit SHA (not the floating @v1) so a moved tag
+      # can't swap the action under us. Bump deliberately. >= v1.0.94 includes the
+      # prompt-injection / secret-exfiltration fixes (env scrub, checkHumanActor).
+      - uses: anthropics/claude-code-action@41ea7642c1436fa0ee57aae58347904b71a5af27 # v1.0.137
         with:
           claude_code_oauth_token: ${{ secrets.claude_oauth_token }}
           github_token: ${{ steps.app-token.outputs.token }}
@@ -119,7 +129,16 @@ jobs:
 
   claude-auto-review:
     name: Automatic
-    if: github.event_name == 'pull_request_target'
+    # Job-level gate: the runner only starts (and only then receives secrets +
+    # OIDC creds) when the PR author already has a trusted relationship to the
+    # repo. This is the ONLY layer that prevents an untrusted actor from reaching
+    # the secret-bearing runner — the action's own write-permission check
+    # (review_allowed_non_write_users) runs AFTER secrets are provisioned, so it
+    # gates the review, not the runner. author_association is a cheap pre-filter
+    # and is not airtight on its own, so keep it together with the in-action check.
+    if: >
+      github.event_name == 'pull_request_target' &&
+      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.pull_request.author_association)
     runs-on: ${{ inputs.runner }}
     permissions:
       contents: read
@@ -131,13 +150,21 @@ jobs:
         with:
           app-id: ${{ inputs.gh_app_id }}
           private-key: ${{ secrets.gh_app_private_key }}
+          # Cap the App token to the minimum auto-review uses (read code, write PR
+          # comments). Intersected with the App's install perms — can only narrow.
+          # No contents:write — the review never pushes code.
+          permission-contents: read
+          permission-pull-requests: write
 
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.checkout_mode == 'head' && github.event.pull_request.head.sha || github.event.pull_request.base.sha }}
           token: ${{ steps.app-token.outputs.token }}
 
-      - uses: anthropics/claude-code-action@v1
+      # Pinned to an immutable commit SHA (not the floating @v1) so a moved tag
+      # can't swap the action under us. Bump deliberately. >= v1.0.94 includes the
+      # prompt-injection / secret-exfiltration fixes (env scrub, checkHumanActor).
+      - uses: anthropics/claude-code-action@41ea7642c1436fa0ee57aae58347904b71a5af27 # v1.0.137
         with:
           claude_code_oauth_token: ${{ secrets.claude_oauth_token }}
           github_token: ${{ steps.app-token.outputs.token }}
