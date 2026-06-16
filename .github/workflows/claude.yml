@@ -130,15 +130,21 @@ jobs:
   claude-auto-review:
     name: Automatic
     # Job-level gate: the runner only starts (and only then receives secrets +
-    # OIDC creds) when the PR author already has a trusted relationship to the
-    # repo. This is the ONLY layer that prevents an untrusted actor from reaching
-    # the secret-bearing runner — the action's own write-permission check
-    # (review_allowed_non_write_users) runs AFTER secrets are provisioned, so it
-    # gates the review, not the runner. author_association is a cheap pre-filter
-    # and is not airtight on its own, so keep it together with the in-action check.
+    # OIDC creds) when the PR comes from a branch in THIS repo, not a fork. That
+    # is the layer that keeps untrusted fork PRs off the secret-bearing runner —
+    # the action's own write-permission check (review_allowed_non_write_users)
+    # runs AFTER secrets are provisioned, so it gates the review, not the runner.
+    #
+    # We gate on head.repo.fork (not author_association): the webhook payload's
+    # author_association is downgraded for users whose org membership is private
+    # (it reports CONTRIBUTOR/NONE instead of MEMBER), which silently skipped
+    # auto-review for maintainers. fork==false is the same trust boundary commit
+    # #11 intended, without depending on org-membership visibility. Maintainer
+    # PRs push branches to this repo (fork==false) and pass; fork PRs are gated
+    # here and, if desired, can still be reviewed by relaxing the in-action check.
     if: >
       github.event_name == 'pull_request_target' &&
-      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.pull_request.author_association)
+      github.event.pull_request.head.repo.fork == false
     runs-on: ${{ inputs.runner }}
     permissions:
       contents: read
