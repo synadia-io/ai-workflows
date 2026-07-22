@@ -7,11 +7,17 @@ name: Move Major Tag
 #
 # Push v2.3.2 -> v2 is force-updated to the same commit.
 # Pre-release tags (v2.4.0-rc1) are ignored; they should not move v2.
+#
+# A first release on a new major (v3.0.0) creates v3; nothing here is specific
+# to v2. The tag filter deliberately avoids the `+` glob operator: if it were
+# ever treated as a literal, this workflow would silently never fire, which is
+# the same quiet staleness it exists to prevent. `[0-9]*` needs only plain
+# glob semantics.
 
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+*'
+      - 'v[0-9]*.[0-9]*.[0-9]*'
 
 jobs:
   move-major-tag:
