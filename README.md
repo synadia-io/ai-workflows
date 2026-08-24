@@ -75,6 +75,7 @@ jobs:
 | `review_allowed_non_write_users` | string | `*` | Non-write users allowed to trigger auto-review |
 | `interactive_allowed_non_write_users` | string | `""` | Non-write users allowed to use `@claude` interactive (empty = maintainers only) |
 | `track_progress` | boolean | `true` | Show progress updates on the PR |
+| `output_style` | string | `Concise` | Claude Code output style for both jobs: `Auto`, `Concise`, `Explanatory`, `Learning` or `Proactive`. Matched case-insensitively; any other value, including `""`, falls back to `Concise` |
 
 Required secrets:
 - `claude_oauth_token` — Claude Code OAuth token

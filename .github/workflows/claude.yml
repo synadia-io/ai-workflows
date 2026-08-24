@@ -66,7 +66,13 @@ on:
         type: string
         default: ""
       output_style:
-        description: "Output written style (empty = Concise)"
+        # Options: Auto | Concise | Explanatory | Learning | Proactive.
+        # Concise is both the default and the fallback: anything unrecognized —
+        # a typo, or an empty string — resolves to Concise rather than failing.
+        # GitHub expression == ignores case, so "auto" matches "Auto"; each
+        # branch emits its own literal so Claude Code, whose style lookup is
+        # exact-cased, always receives the canonical name.
+        description: "Claude Code output style for both jobs: Auto, Concise, Explanatory, Learning or Proactive (case-insensitive). Any other value, including empty, is Concise."
         type: string
         default: "Concise"
       track_progress:
@@ -125,7 +131,12 @@ jobs:
           github_token: ${{ steps.app-token.outputs.token }}
           trigger_phrase: ${{ inputs.trigger_phrase }}
           allowed_non_write_users: ${{ inputs.interactive_allowed_non_write_users }}
-          settings: '{"outputStyle": "${{ inputs.output_style }}"}'
+          settings: >-
+            ${{ inputs.output_style == 'Auto' && '{"outputStyle": "Auto"}'
+            || inputs.output_style == 'Explanatory' && '{"outputStyle": "Explanatory"}'
+            || inputs.output_style == 'Learning' && '{"outputStyle": "Learning"}'
+            || inputs.output_style == 'Proactive' && '{"outputStyle": "Proactive"}'
+            || '{"outputStyle": "Concise"}' }}
           claude_args: >-
             --max-turns ${{ inputs.interactive_max_turns }}
             --allowedTools "${{ inputs.interactive_allowed_tools }}"
@@ -217,7 +228,12 @@ jobs:
           claude_code_oauth_token: ${{ secrets.claude_oauth_token }}
           github_token: ${{ steps.app-token.outputs.token }}
           allowed_non_write_users: ${{ inputs.review_allowed_non_write_users }}
-          settings: '{"outputStyle": "${{ inputs.output_style }}"}'
+          settings: >-
+            ${{ inputs.output_style == 'Auto' && '{"outputStyle": "Auto"}'
+            || inputs.output_style == 'Explanatory' && '{"outputStyle": "Explanatory"}'
+            || inputs.output_style == 'Learning' && '{"outputStyle": "Learning"}'
+            || inputs.output_style == 'Proactive' && '{"outputStyle": "Proactive"}'
+            || '{"outputStyle": "Concise"}' }}
           track_progress: ${{ inputs.track_progress }}
           prompt: |
             Review this PR for code quality, security, and correctness.
