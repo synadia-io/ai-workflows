@@ -65,6 +65,10 @@ on:
         description: "Non-write users allowed to use @claude interactive (empty = maintainers only)"
         type: string
         default: ""
+      output_style:
+        description: "Output written style (empty = Concise)"
+        type: string
+        default: "Concise"
       track_progress:
         description: "Show progress updates on the PR"
         type: boolean
@@ -121,7 +125,7 @@ jobs:
           github_token: ${{ steps.app-token.outputs.token }}
           trigger_phrase: ${{ inputs.trigger_phrase }}
           allowed_non_write_users: ${{ inputs.interactive_allowed_non_write_users }}
-          settings: '{"outputStyle": "Concise"}'
+          settings: '{"outputStyle": "${{ inputs.output_style }}"}'
           claude_args: >-
             --max-turns ${{ inputs.interactive_max_turns }}
             --allowedTools "${{ inputs.interactive_allowed_tools }}"
@@ -213,7 +217,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.claude_oauth_token }}
           github_token: ${{ steps.app-token.outputs.token }}
           allowed_non_write_users: ${{ inputs.review_allowed_non_write_users }}
-          settings: '{"outputStyle": "Concise"}'
+          settings: '{"outputStyle": "${{ inputs.output_style }}"}'
           track_progress: ${{ inputs.track_progress }}
           prompt: |
             Review this PR for code quality, security, and correctness.
