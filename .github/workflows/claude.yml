@@ -119,7 +119,7 @@ jobs:
       # Pinned to an immutable commit SHA (not the floating @v1) so a moved tag
       # can't swap the action under us. Bump deliberately. >= v1.0.94 includes the
       # prompt-injection / secret-exfiltration fixes (env scrub, checkHumanActor).
-      - uses: anthropics/claude-code-action@41ea7642c1436fa0ee57aae58347904b71a5af27 # v1.0.137
+      - uses: anthropics/claude-code-action@19dda84776b3518d98b8798e591daee763049ed3 # v1.0.220
         with:
           claude_code_oauth_token: ${{ secrets.claude_oauth_token }}
           github_token: ${{ steps.app-token.outputs.token }}
@@ -212,7 +212,7 @@ jobs:
       # Pinned to an immutable commit SHA (not the floating @v1) so a moved tag
       # can't swap the action under us. Bump deliberately. >= v1.0.94 includes the
       # prompt-injection / secret-exfiltration fixes (env scrub, checkHumanActor).
-      - uses: anthropics/claude-code-action@41ea7642c1436fa0ee57aae58347904b71a5af27 # v1.0.137
+      - uses: anthropics/claude-code-action@19dda84776b3518d98b8798e591daee763049ed3 # v1.0.220
         with:
           claude_code_oauth_token: ${{ secrets.claude_oauth_token }}
           github_token: ${{ steps.app-token.outputs.token }}
