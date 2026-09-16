@@ -119,6 +119,27 @@ v2 callers should set `permissions: { contents: read, actions: read }`. The `con
 - Adding inputs with backward-compatible defaults is minor/patch
 - Pin to a specific SHA (e.g., `@abc1234`) for strict reproducibility
 
+### Releasing
+
+Tag the merge commit with a full version and push it. Nothing else is needed — `.github/workflows/move-major-tag.yml` force-moves the major tag (`v2`) to match.
+
+```bash
+git tag v2.3.2 <sha>
+git push origin v2.3.2
+```
+
+The full version tag is the only one you create by hand. Never create or move a major tag (`v2`, `v3`) yourself — that is the job's whole purpose, and doing it manually is what gets forgotten.
+
+`@v2` is a moving tag, so a release reaches every caller on their next PR event with no change on their side. That only works if `v2` actually moves: when it is left behind, callers keep running the older workflow and there is no signal that anything is stale. Pre-release tags (`v2.4.0-rc1`) do not move `v2`.
+
+#### Starting a new major
+
+Nothing extra to do. Push `v3.0.0` and the job creates `v3` at that commit — creating and moving a major tag are the same operation, so there is no special first release. `v3` is usable by callers immediately; you do not need to ship a patch to bring it into existence.
+
+Two things the job does *not* do on a major bump: update the `@v2` references in this README and in `examples/`, and tell existing callers. `@v2` callers stay on v2 by design and only move when they edit their own workflow.
+
+Note that a tag push runs the workflow file as it exists *on the tagged commit*. Tagging a commit from before this job was added does nothing at all.
+
 ## Security
 
 The following guards are hardcoded in the reusable workflow and **cannot be overridden** by callers:
