@@ -75,6 +75,23 @@ jobs:
 | `review_allowed_non_write_users` | string | `*` | Non-write users allowed to trigger auto-review |
 | `interactive_allowed_non_write_users` | string | `""` | Non-write users allowed to use `@claude` interactive (empty = maintainers only) |
 | `track_progress` | boolean | `true` | Show progress updates on the PR |
+| `output_style` | string | `Concise` | Claude Code output style for both jobs: `Default`, `Concise` or `Explanatory` (see below) |
+
+### `output_style`
+
+Sets the Claude Code [output style](https://code.claude.com/docs/en/output-styles) for both the auto-review and `@claude` interactive jobs. The workflow writes it to the [`outputStyle` setting](https://code.claude.com/docs/en/settings) the action passes to Claude Code. Three values are accepted, matched case-insensitively:
+
+| Value | What Claude gets |
+|-------|------------------|
+| [`Default`](https://code.claude.com/docs/en/output-styles#built-in-output-styles) | **Claude Code's own default, which is not a style at all** — the docs call it "the existing system prompt, designed to help you complete software engineering tasks efficiently". No style prompt is added, so this is how you opt out of styling. It is *not* the same as this input's default value (see the note below) |
+| [`Concise`](https://code.claude.com/docs/en/output-styles#built-in-output-styles) | Leads with the result, skips preamble and narration, keeps responses short — while doing the engineering work as thoroughly as `Default`. Error reports, security warnings and destructive-action confirmations are always kept in full. Requires Claude Code v2.1.237 or later |
+| [`Explanatory`](https://code.claude.com/docs/en/output-styles#built-in-output-styles) | Adds educational "Insights" between the work, explaining implementation choices and codebase patterns |
+
+Note that `Default` and *the default* are two different things. The input's default value is `Concise`, so **omitting `output_style` entirely gives you `Concise`, not `Default`** — and because `Concise` is stock plus a terseness instruction, explicitly asking for `Default` makes Claude *more* verbose than leaving the input alone.
+
+Anything else — a typo, `""`, or Claude Code's two remaining built-ins — falls back to `Concise` rather than failing the job. Those two are excluded on purpose: [`Learning`](https://code.claude.com/docs/en/output-styles#built-in-output-styles) adds `TODO(human)` markers and waits for a human to implement them, which is useless in an unattended workflow, and [`Proactive`](https://code.claude.com/docs/en/output-styles#built-in-output-styles) pushes Claude to execute immediately and prefer action over planning, which has no meaning here because both jobs are read-only.
+
+One caveat from the docs: [output styles apply to the main conversation only](https://code.claude.com/docs/en/output-styles#how-output-styles-work) — a subagent runs its own system prompt. Both jobs allow `Task`, so any subagent Claude spawns mid-review is unstyled; the review comment you actually read is written by the main conversation, which is styled.
 
 Required secrets:
 - `claude_oauth_token` — Claude Code OAuth token
